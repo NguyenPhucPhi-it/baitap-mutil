@@ -1,0 +1,58 @@
+import javax.swing.*;
+import java.awt.*;
+
+public class CustomButtonExample {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            JFrame frame = new JFrame("Custom Button Example");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(300, 200);
+            frame.setLayout(new FlowLayout());
+
+            // Example of custom buttons
+            JButton button1 = createCustomButton("Tiện ích");
+            JButton button2 = createCustomButton("Đăng xuất");
+
+            frame.add(button1);
+            frame.add(button2);
+
+            frame.setVisible(true);
+        });
+    }
+
+    public static JButton createCustomButton(String text) {
+        JButton button = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g); // Always call super first
+                if (getModel().isArmed()) {
+                    g.setColor(new Color(100, 149, 237)); // Pressed color
+                } else {
+                    g.setColor(new Color(173, 216, 230)); // Default color
+                }
+                g.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // Rounded rectangle
+            }
+
+            @Override
+            public void paintBorder(Graphics g) {
+                g.setColor(new Color(0, 128, 255)); // Border color
+                g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20); // Rounded border
+            }
+        };
+
+        button.setFocusPainted(false); // Remove focus border
+        button.setContentAreaFilled(false); // Disable default background
+        button.setOpaque(false); // Transparency
+        button.setBorderPainted(false); // Remove default border
+        button.setForeground(Color.BLACK); // Text color
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setPreferredSize(new Dimension(120, 40)); // Button size
+        return button;
+    }
+}
